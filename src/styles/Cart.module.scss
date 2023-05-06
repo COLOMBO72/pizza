@@ -10,6 +10,7 @@
   justify-content: space-between;
   .buttonAccept{
     margin-top: 20px;
+    transition: 0.2s;
     background-color: white;
     border-width: 0;
     cursor: pointer;
@@ -18,7 +19,7 @@
   }
   .buttonAccept:hover{
     transform: scale(1.1);
-    transition: 0.1s;
+    transition: 0.2s;
   }
   .buttonDel{
     margin-top: 30px;
@@ -28,10 +29,11 @@
     border-width: 0;
     cursor: pointer;
     font-size: 8px;
+    transition: 0.2s;
   }
   .buttonDel:hover{
     transform: scale(1.1);
-    transition: 0.1s;
+    transition: 0.2s;
   }
   buttonactive{
     background-color: black;
@@ -56,6 +58,7 @@
       bottom: 5px;
       right: 5px;
       cursor: pointer;
+      transition: 0.2s;
     }
     .delete:hover{
       transform: scale(1.2);
@@ -76,6 +79,7 @@
       img{
         margin: 5px;
         cursor: pointer;
+        transition: 0.2s;
       }
       img:hover{
         transform: scale(1.2);
