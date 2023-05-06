@@ -27,7 +27,6 @@ const filterSlice = createSlice({
       state.ValueOfSearch = action.payload;
     },
     setUrlFilters(state,action){
-      state.sort = action.payload.sort;
       state.page = Number(action.payload.page);
       state.categoryId = Number(action.payload.categoryId);
     }

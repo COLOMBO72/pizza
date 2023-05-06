@@ -5,7 +5,7 @@ import Skeleton from './ProductItems/Skeleton';
 import axios from 'axios';
 import Categories from './ProductItems/Categories';
 import { useNavigate } from 'react-router-dom';
-import Sort from './ProductItems/Sort';
+import Sort, { arrayList } from './ProductItems/Sort';
 import qs from 'qs';
 import { useSelector, useDispatch } from 'react-redux';
 import Pagination from './ProductItems/Pagination';
@@ -13,6 +13,8 @@ import { setCategoryId, setPage, setUrlFilters } from '../Redux/slices/filterSli
 
 const Home = () => {
   const navigate = useNavigate();
+  const isSearch = React.useRef(false);
+  const isMounted = React.useRef(false);
   const dispatchCategory = useDispatch(setCategoryId());
   const dispatchPage = useDispatch(setPage());
   const categoryId = useSelector((state) => state.filter.categoryId);
@@ -30,24 +32,12 @@ const Home = () => {
     dispatchCategory(setCategoryId(id));
   };
 
-  React.useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1))
-
-      dispatchCategory(setUrlFilters({
-        ...params,
-
-      }))
-    }
-  },[])
-
-  React.useEffect(() => {
+  const getPizzas = () => {
     setIsLoading(true);
     const order = sortType.includes('-') ? 'desc' : 'asc';
     const sortBy = sortType.replace('-', '');
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? searchValue : '';
-
     axios
       .get(
         `https://644f4cf0b61a9f0c4d1fc869.mockapi.io/Products?limit=4&page=${page}&${category}&sortBy=${sortBy}&order=${order}&search=${search}`,
@@ -57,17 +47,44 @@ const Home = () => {
         setState({ pizzas });
         setIsLoading(false);
       });
-  }, [categoryId, sortType, searchValue, page]);
-  // querystring возвращает объект и вписывает его в строку с помощью navigate
+  }
+
   React.useEffect(() => {
-    const queryString = qs.stringify({
-      sortType,
-      categoryId,
-      page,
-      searchValue,
-    });
-    navigate(`?${queryString}`);
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1))
+      dispatchCategory(setUrlFilters({
+        ...params,
+      }))
+    } // 1 
+    //При первом рендере - парсим из search все параметры, превращаем их в объект
+    // и всё это передаём в Redux
+    isSearch.current = true;
+  },[])
+  
+  React.useEffect(() => {
+    // querystring возвращает объект и вписывает его в строку с помощью navigate
+    // 2 проверяем был ли первый рендер, если не было, то вшиваем в Redux
+    // если изменили параметры и был первый рендер, то срабатывает if
+    if (isMounted.current){
+      const queryString = qs.stringify({
+        sortType,
+        categoryId,
+        page,
+        searchValue,
+      });
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
   }, [categoryId, sortType, page, searchValue]);
+  //Если был первый рендер то запрашиваем пиццы
+  React.useEffect(() => {
+    if (!isSearch.current){
+      getPizzas();
+    }
+    isSearch.current=false;
+  }, [categoryId, sortType, searchValue, page]);
+  
+  
 
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
   const pizzasArray = state.pizzas.map((a, i) => <ProductCard key={i} {...a} />);

@@ -3,7 +3,7 @@ import stylesSort from '../../styles/Sort.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../../Redux/slices/filterSlice';
 
-export const Sort = React.memo(() => {
+const Sort = React.memo(() => {
   const sort = useSelector((state) => state.filter.sort);
   const [activeModal, setActiveModal] = React.useState(false);
   return (
@@ -25,7 +25,7 @@ export const arrayList = [
   { name: 'Непопулярные', sortProps: 'rating' },
 ];
 
-const Modal = ({ sort, setActiveModal, setSort }, arrayList) => {
+const Modal = ({ sort, setActiveModal, setSort }) => {
   const dispatch = useDispatch(setSort());
   const ClickedSort = (sortobj) => {
     dispatch(setSort(sortobj))
