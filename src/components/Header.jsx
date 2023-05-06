@@ -2,8 +2,10 @@ import stylesHeader from '../styles/Header.module.scss';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Search from './ProductItems/Search';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
+  const sum = useSelector((state) => state.cart.sum);
   return (
     <header className={stylesHeader.headerWrapper}>
       <div className={stylesHeader.upHeader}>
@@ -15,15 +17,15 @@ const Header = () => {
             <p>Taste and quality are everything</p>
           </div>
         </div>
-        <Search/>
+        <Search />
         <div className={stylesHeader.headerRight}>
-          <div>
-            <NavLink to='/cart'>
+          <div className={stylesHeader.cardWrapper}>
+            <NavLink to="/cart">
+              <span className={stylesHeader.sum}>{sum}р</span>
               <img src="/img/logo-shop.png" />
             </NavLink>
-            <span>0$</span>
           </div>
-          <NavLink to='/login'>
+          <NavLink to="/login">
             <img src="/img/logo-user.png" />
           </NavLink>
         </div>

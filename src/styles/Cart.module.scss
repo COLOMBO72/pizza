@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  button{
+  .buttonAccept{
     margin-top: 20px;
     background-color: white;
     border-width: 0;
@@ -16,7 +16,20 @@
     font-size: 18px;
     border-bottom-width: 2px;
   }
-  button:hover{
+  .buttonAccept:hover{
+    transform: scale(1.1);
+    transition: 0.1s;
+  }
+  .buttonDel{
+    margin-top: 30px;
+    color:rgb(255, 17, 0);
+    background-color: white;
+    font-weight: 900;
+    border-width: 0;
+    cursor: pointer;
+    font-size: 8px;
+  }
+  .buttonDel:hover{
     transform: scale(1.1);
     transition: 0.1s;
   }
@@ -28,10 +41,93 @@
     font-size: 24px;
     margin-bottom: 20px;
   }
+
   .itemBlock{
+    width: 550px;
     border-radius: 10px;
     box-shadow: 0px 1px 7px -2px rgba(0, 0, 0, 0.5);
     padding: 10px;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    .delete{
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      cursor: pointer;
+    }
+    .delete:hover{
+      transform: scale(1.2);
+      transition: 0.2s;
+    }
+  }
+  .infoBlock{
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    .count{
+      font-size: 18px;
+      position: relative;
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      img{
+        margin: 5px;
+        cursor: pointer;
+      }
+      img:hover{
+        transform: scale(1.2);
+        transition: 0.2s;
+      }
+      .price{
+        margin-left: 20px;
+      }
+    }
+    .types{
+      position: relative;
+      h1{
+        font-size: 18px;
+      }
+      span{
+        padding: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+.EmptyCartWrapper{
+  margin-top: 30px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  h3{
+    border: solid;
+    border-width: 2px;
+    border-color:#FF9966;
+    border-right: 0px;
+    border-left: 0px;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  a{
+    margin: auto;
+    margin-top: 20px;
+    font-size: 26px;
+    text-decoration: none;
+    color: #FF9966;
+    border: solid 2px;
+    border-radius: 20px;
+    transition: 0.2s;
+    padding: 10px;
+    &:hover{
+      transform: scale(1.05);
+      transition: 0.2s;
+    }
   }
 }

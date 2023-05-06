@@ -1,15 +1,31 @@
 import React from 'react';
 import stylesCard from '../../styles/ProductCard.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { addOrder } from '../../Redux/slices/cartSlice';
 
-const ProductCard = (props) => {
+const ProductCard = ({ id, title, price, imageUrl, type, size, ...props }) => {
   let arrTypes = ['Тонкое', 'Толстое'];
   let [activeType, setActiveType] = React.useState(false);
   let [activeSize, setActiveSize] = React.useState(false);
+  const dispatch = useDispatch();
+  const countOrder = useSelector((state) => state.cart.orders.find((obj) => obj.id == id));
+  const addedCount = countOrder ? countOrder.count : 0;
+  const onClickAdd = () => {
+    const order = {
+      id,
+      title,
+      price,
+      imageUrl,
+      type: arrTypes[activeType],
+      activeSize,
+    };
+    dispatch(addOrder(order));
+  };
 
   return (
     <div className={stylesCard.card}>
-      <img src={props.imageUrl} width={200} />
-      <p>{props.title}</p>
+      <img src={imageUrl} width={200} />
+      <p>{title}</p>
       <div>
         <div className={stylesCard.sizesPizza}>
           {props.sizes.map((s) => {
@@ -38,9 +54,10 @@ const ProductCard = (props) => {
           })}
         </div>
         <div className={stylesCard.addToShop}>
-          <span>Price: {props.price}</span>
-          <button>
+          <span>Price: {price}</span>
+          <button onClick={onClickAdd}>
             <img src="/img/logo-shop.png" width={20} />
+            {addedCount > 0 ? <span>{addedCount}</span> : ''}
           </button>
         </div>
       </div>

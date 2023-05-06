@@ -2,19 +2,19 @@
   display: flex;
   list-style-type: none;
   li{
+    color: #c4c4c4;
+    transition: 0.1s;
     &:global{
       &.selected{
-        background-color: #FF9966;
+        color: #FF9966;
       }
     }
-    padding: 5px;
+    font-size: 24px;
     margin: 5px;
-    border: solid 1px;
-    border-color: #FF9966;
     cursor: pointer;
-    border-radius: 5px;
     &:hover{
-      background-color: #FF9966;
+      color: black;
+      transition: 0.1s;
     }
   }
 }

@@ -1,7 +1,7 @@
 header {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    
     margin-top: 25px;
     .upHeader {
         background-color: white;
@@ -26,27 +26,50 @@ header {
         p{
             font-size: 16px;
             font-weight: 700;
+            color: rgba(0, 0, 0, 0.39);
             text-decoration: underline;
+            transition: 0.2s;
             @media (max-width: 700px) {
                 font-size: 12px;
+              }
+              &:hover{
+                color:black;
+                transition: 0.2s;
               }
         }
     }
 }
 .headerRight{
+    align-items: center;
+    justify-content: center;
     display: flex;
     margin-right: 20px;
     width: 120px;
     justify-content: space-between;
-    div{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .cardWrapper{
+            a{
+                background-color: #FF9966;
+                display: flex;
+                margin: 10px;
+                text-decoration: none;
+                align-items: center;
+                justify-content: center;
+                color: black;
+                padding: 5px;
+                border-radius: 10px;
+                img{
+                    height: 25px;
+                }
+                span{
+                    border: solid;
+                    border-left: 0;
+                    border-width: 2px;
+                    border-top: 0;
+                    border-bottom: 0;
+                    padding: 5px;
+                    font-size: 18px;
+                }
+            }
+        }
     }
-    img{
-        height: 40px;
-    }
-}
-
-
-
+    
