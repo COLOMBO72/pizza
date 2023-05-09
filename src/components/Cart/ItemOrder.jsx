@@ -24,7 +24,7 @@ const ItemOrder = ({ id, title, price, count, imageUrl, activeSize, type }) => {
   }
   return (
     <div className={stylesCart.itemBlock}>
-      <img src={imageUrl} width={100} />
+      <img className={stylesCart.imgBig} src={imageUrl} />
       <div className={stylesCart.infoBlock}>
         <div className={stylesCart.types}>
           <h1>{title}</h1>

@@ -1,0 +1,16 @@
+.errorWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 500px;
+  background-color: white;
+  border-radius: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  img{
+    width: 100px;
+  }
+  span{
+    font-weight: 700;
+  }
+}

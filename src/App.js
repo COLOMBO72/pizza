@@ -5,6 +5,8 @@ import Header from './components/Header';
 import Home from './components/Home';
 import NotFound from './components/NotFound/NotFound';
 import Cart from './components/Cart/Cart';
+import Login from './components/Login/Login';
+import PizzaPage from './components/ProductItems/PizzaPage';
 
 function App() {
   return (
@@ -13,7 +15,10 @@ function App() {
       <main className="Main">
         <Routes>
           <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/pizza/:id" element={<PizzaPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

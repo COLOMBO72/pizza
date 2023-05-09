@@ -11,8 +11,9 @@ const cartSlice = createSlice({
   reducers: {
     addOrder(state, action) {
       const findOrder = state.orders.find((obj) => obj.id == action.payload.id);
+      // const findType = state.orders.find((obj) => obj.type == action.payload.type);
       if (findOrder) {
-        findOrder.count++;
+        findOrder.count++
       } else {
         state.orders.push({
           ...action.payload,
@@ -28,6 +29,9 @@ const cartSlice = createSlice({
       if (findOrder) {
         findOrder.count--;
       }
+      state.sum = state.orders.reduce((price, obj) => {
+        return obj.price * obj.count;
+      }, 0);
     },
     removeOrder(state,action) {
       state.orders = state.orders.filter((obj) => obj.id !== action.payload)

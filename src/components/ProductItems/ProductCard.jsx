@@ -2,6 +2,7 @@ import React from 'react';
 import stylesCard from '../../styles/ProductCard.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { addOrder } from '../../Redux/slices/cartSlice';
+import { Link } from 'react-router-dom';
 
 const ProductCard = ({ id, title, price, imageUrl, type, size, ...props }) => {
   let arrTypes = ['Тонкое', 'Толстое'];
@@ -19,12 +20,17 @@ const ProductCard = ({ id, title, price, imageUrl, type, size, ...props }) => {
       type: arrTypes[activeType],
       activeSize,
     };
-    dispatch(addOrder(order));
+    if (activeSize == false && type==undefined) {
+      alert('Выберите размер и тип пиццы');
+    } else {
+      dispatch(addOrder(order));
+      console.log(order);
+    }
   };
 
   return (
     <div className={stylesCard.card}>
-      <img src={imageUrl} width={200} />
+      <Link to={`/pizza/${id}`}><img src={imageUrl} width={200} /></Link>
       <p>{title}</p>
       <div>
         <div className={stylesCard.sizesPizza}>
