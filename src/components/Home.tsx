@@ -3,7 +3,7 @@ import stylesProducts from '../styles/Home.module.scss';
 import ProductCard from './ProductItems/ProductCard';
 import Skeleton from './ProductItems/Skeleton';
 import Categories from './ProductItems/Categories';
-import Sort from './ProductItems/Sort';
+import SortPopup from './ProductItems/Sort';
 import { useSelector }  from 'react-redux';
 import Pagination from './ProductItems/Pagination';
 import {
@@ -27,9 +27,9 @@ const Home: React.FC = () => {
     dispatch(setPage(i));
   };
 
-  const onClickCategory = (id: number) => {
+  const onClickCategory = React.useCallback((id: number) => {
     dispatch(setCategoryId(id));
-  };
+  }, [])//производит перерисовку только при первом рендере если []
 
   const setPizzas = () => {
     const order = sort.sortProps.includes('-') ? 'desc' : 'asc';
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
       <div className={stylesProducts.productsWrapper}>
         <div className={stylesProducts.header}>
           <Categories value={categoryId} onClickCategory={onClickCategory} />
-          <Sort />
+          <SortPopup value={sort} />
         </div>
         <div className={stylesProducts.productCards}>
           {status == 'loading' ? skeleton : pizzasArray}

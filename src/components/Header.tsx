@@ -8,6 +8,19 @@ import { selectCart } from '../Redux/slices/cartSlice';
 const Header: React.FC = () => {
   const { sum, orders } = useSelector(selectCart);
   const location = useLocation();
+  const isMounted = React.useRef(false);
+
+  //сохраняет в локальный store данные, чтобы
+  //их доставать после обновления страницы
+  // для этого делаем useRef
+  React.useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(orders);
+      localStorage.setItem('cart', json);
+    }
+    isMounted.current = true;
+  }, [orders]);
+
   return (
     <header className={stylesHeader.headerWrapper}>
       <div className={stylesHeader.upHeader}>
@@ -19,7 +32,7 @@ const Header: React.FC = () => {
             <p>Taste and quality are everything</p>
           </div>
         </div>
-        <Search />
+        {location.pathname != '/cart' && <Search />}
         <div className={stylesHeader.headerRight}>
           <div className={stylesHeader.cardWrapper}>
             {location.pathname != '/cart' && (

@@ -5,9 +5,8 @@ type CategoryProps = {
   value: number;
   onClickCategory: (i: number)=>void;
 };
-
-const Categories: React.FC<CategoryProps> = ({ value, onClickCategory }) => {
-  const categories = ['all', 'meat', 'vegetarian', 'gril', 'spicy', 'closed'];
+const categories = ['all', 'meat', 'vegetarian', 'gril', 'spicy', 'closed'];
+const Categories: React.FC<CategoryProps> = React.memo(({ value, onClickCategory }) => {
   const array = categories.map((c, i) => {
     return (
       <a
@@ -21,12 +20,12 @@ const Categories: React.FC<CategoryProps> = ({ value, onClickCategory }) => {
       </a>
     );
   });
-
+//memo предотвращает лишние перерисовки
   return (
     <div className={stylesCategories.headerMenu}>
       <nav>{array}</nav>
     </div>
   );
-};
+})
 
 export default Categories;

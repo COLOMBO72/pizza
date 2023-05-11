@@ -1,13 +1,16 @@
 import React from 'react';
 import stylesSort from '../../styles/Sort.module.scss';
-import { useSelector, useDispatch } from 'react-redux';
-import { SortEnum, selectFilterSort, setSort } from '../../Redux/slices/filterSlice';
+import { useDispatch } from 'react-redux';
+import { Sort, SortEnum, setSort } from '../../Redux/slices/filterSlice';
 
+type SortProperties = {
+  value: Sort;
+};
 
-const Sort: React.FC = React.memo(() => {
+const SortPopup: React.FC<SortProperties> = React.memo(({ value }) => {
   const refSort = React.useRef<HTMLDivElement>(null);
-  const sort = useSelector(selectFilterSort);
   const [activeModal, setActiveModal] = React.useState(false);
+  console.log('rerenderer popup')
   React.useEffect(() => {
     //логика закрытия попапа при клике на любой другой объект
     const handleClickOutside = (e: MouseEvent) => {
@@ -20,8 +23,10 @@ const Sort: React.FC = React.memo(() => {
   }, []);
   return (
     <div ref={refSort} className={stylesSort.wrapper}>
-      <span onClick={() => setActiveModal(!activeModal)}>Sort by: {sort.name}</span>
-      {activeModal ? <Modal sort={sort} setActiveModal={setActiveModal} setSort={setSort} /> : null}
+      <span onClick={() => setActiveModal(!activeModal)}>Sort by: {value.name}</span>
+      {activeModal ? (
+        <Modal value={value} setActiveModal={setActiveModal} setSort={setSort} />
+      ) : null}
     </div>
   );
 });
@@ -40,7 +45,7 @@ export const arrayList: ArrayList[] = [
   { name: 'Непопулярные', sortProps: SortEnum.RATING_DESC },
 ];
 
-const Modal = ({ sort, setActiveModal, setSort }) => {
+const Modal = ({ value, setActiveModal, setSort }) => {
   const dispatch = useDispatch();
   const ClickedSort = (sortobj: ArrayList) => {
     dispatch(setSort(sortobj));
@@ -54,7 +59,7 @@ const Modal = ({ sort, setActiveModal, setSort }) => {
             <li
               key={i}
               onClick={() => ClickedSort(l)}
-              className={sort.sortProps === l.sortProps ? `${stylesSort.listActive}` : null}
+              className={value.sortProps === l.sortProps ? `${stylesSort.listActive}` : null}
             >
               {l.name}
             </li>
@@ -65,4 +70,4 @@ const Modal = ({ sort, setActiveModal, setSort }) => {
   );
 };
 
-export default Sort;
+export default SortPopup;

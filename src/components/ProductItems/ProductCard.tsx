@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../Redux/store';
 import { Pizza } from '../../Redux/slices/pizzasSlice';
 
-const ProductCard: React.FC<Pizza> = ({id,title,price,imageUrl,types,sizes,rating}) => {
+const ProductCard: React.FC<Pizza> = ({ id, title, price, imageUrl, types, sizes, rating }) => {
   let arrTypes = ['Тонкое', 'Пышное'];
   let [activeType, setActiveType] = React.useState('');
   let [activeSize, setActiveSize] = React.useState(0);
@@ -43,7 +43,13 @@ const ProductCard: React.FC<Pizza> = ({id,title,price,imageUrl,types,sizes,ratin
           {sizes.map((s) => {
             return (
               <button
-                onClick={() => setActiveSize(s)}
+                onClick={() => {
+                  if (activeSize == 0) {
+                    setActiveSize(s);
+                  } else {
+                    setActiveSize(0);
+                  }
+                }}
                 className={activeSize === s ? `${stylesCard.sbuttonactive}` : null}
                 key={s}
               >
@@ -56,7 +62,13 @@ const ProductCard: React.FC<Pizza> = ({id,title,price,imageUrl,types,sizes,ratin
           {types.map((t) => {
             return (
               <button
-                onClick={() => setActiveType(t)}
+                onClick={() => {
+                  if (activeType == '') {
+                    setActiveType(t);
+                  } else {
+                    setActiveType('');
+                  }
+                }}
                 className={activeType === t ? `${stylesCard.tbuttonactive}` : null}
                 key={t}
               >
