@@ -1,8 +1,7 @@
 import React from "react"
 import ContentLoader from "react-content-loader"
-import stylesCard from '../../styles/ProductCard.module.scss';
 
-const Skeleton = (props) => (
+const Skeleton:React.FC = (props) => (
   <ContentLoader 
     speed={2}
     width={254}

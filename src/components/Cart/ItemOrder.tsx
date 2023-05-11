@@ -1,12 +1,27 @@
 import React from 'react';
 import stylesCart from '../../styles/Cart.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { addOrder, orderMinusCount, removeOrder } from '../../Redux/slices/cartSlice';
+import { useDispatch } from 'react-redux';
+import { CartItem, addOrder, orderMinusCount, removeOrder } from '../../Redux/slices/cartSlice';
 
-const ItemOrder = ({ id, title, price, count, imageUrl, activeSize, type }) => {
+type Itemorder = {
+  id: string,
+  title: string,
+  price: number,
+  count: number,
+  imageUrl: string,
+  size: number,
+  type: string
+}
+
+const ItemOrder:React.FC<Itemorder> = ({ id, title, price, count, imageUrl, size, type }) => {
   const dispatch = useDispatch();
+  const onClickDelete = () => {
+    if (window.confirm('Вы уверены что хотите убрать товар?')){
+      dispatch(removeOrder(id))
+    }
+  }
   const onClickPlus = () => {
-    dispatch(addOrder({ id }));
+    dispatch(addOrder({ id }as CartItem));
   };
   const onClickMinus = () => {
     if (count<=1){
@@ -14,12 +29,7 @@ const ItemOrder = ({ id, title, price, count, imageUrl, activeSize, type }) => {
     }else{
       dispatch(orderMinusCount({
         id,
-      }))
-    }
-  }
-  const onClickDelete = () => {
-    if (window.confirm('Вы уверены что хотите убрать товар?')){
-      dispatch(removeOrder(id))
+      }as CartItem))
     }
   }
   return (
@@ -28,7 +38,7 @@ const ItemOrder = ({ id, title, price, count, imageUrl, activeSize, type }) => {
       <div className={stylesCart.infoBlock}>
         <div className={stylesCart.types}>
           <h1>{title}</h1>
-          <span>{activeSize} см.</span>
+          <span>{size} см.</span>
           <span>{type}</span>
         </div>
         <div className={stylesCart.count}>

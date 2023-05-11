@@ -3,10 +3,10 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Search from './ProductItems/Search';
 import { useSelector } from 'react-redux';
+import { selectCart } from '../Redux/slices/cartSlice';
 
-const Header = () => {
-  const sum = useSelector((state) => state.cart.sum);
-  const orders = useSelector((state) => state.cart.orders);
+const Header: React.FC = () => {
+  const { sum, orders } = useSelector(selectCart);
   const location = useLocation();
   return (
     <header className={stylesHeader.headerWrapper}>

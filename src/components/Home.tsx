@@ -4,40 +4,42 @@ import ProductCard from './ProductItems/ProductCard';
 import Skeleton from './ProductItems/Skeleton';
 import Categories from './ProductItems/Categories';
 import Sort from './ProductItems/Sort';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector }  from 'react-redux';
 import Pagination from './ProductItems/Pagination';
-import { setCategoryId, setPage } from '../Redux/slices/filterSlice';
-import { axiosPizzas } from '../Redux/slices/pizzasSlice';
+import {
+  selectFilter,
+  selectFilterSort,
+  setCategoryId,
+  setPage,
+} from '../Redux/slices/filterSlice';
+import { axiosPizzas, selectPizzas } from '../Redux/slices/pizzasSlice';
 import Error from './NotFound/Error';
 import CartRight from './Cart/CartRight';
+import { useAppDispatch } from '../Redux/store';
 
-const Home = () => {
-  const dispatchCategory = useDispatch(setCategoryId());
-  const dispatchPage = useDispatch(setPage());
-  const dispatchPizzas = useDispatch(axiosPizzas());
-  const categoryId = useSelector((state) => state.filter.categoryId);
-  const sortType = useSelector((state) => state.filter.sort.sortProps);
-  const page = useSelector((state) => state.filter.page);
-  const pizzas = useSelector((state) => state.pizzas.items);
-  const status = useSelector((state) => state.pizzas.status);
-  const searchValue = useSelector((state) => state.filter.ValueOfSearch);
+const Home: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { categoryId, page, ValueOfSearch } = useSelector(selectFilter);
+  const { items, status } = useSelector(selectPizzas);
+  const sort = useSelector(selectFilterSort);
 
-  const onChangePage = (i) => {
-    dispatchPage(setPage(i));
+  const onChangePage = (i: number) => {
+    dispatch(setPage(i));
   };
 
-  const onClickCategory = (id) => {
-    dispatchCategory(setCategoryId(id));
+  const onClickCategory = (id: number) => {
+    dispatch(setCategoryId(id));
   };
 
   const setPizzas = () => {
-    const order = sortType.includes('-') ? 'desc' : 'asc';
-    const sortBy = sortType.replace('-', '');
+    const order = sort.sortProps.includes('-') ? 'desc' : 'asc';
+    const sortBy = sort.sortProps.replace('-', '');
     const category = categoryId > 0 ? `category=${categoryId}` : '';
-    const search = searchValue ? searchValue : '';
-    dispatchPizzas(
+    const search = ValueOfSearch ? ValueOfSearch : '';
+
+    dispatch(
       axiosPizzas({
-        page,
+        page: String(page),
         category,
         order,
         sortBy,
@@ -47,10 +49,10 @@ const Home = () => {
   };
   React.useEffect(() => {
     setPizzas();
-  }, [categoryId, sortType, page, searchValue]);
+  }, [categoryId, sort, page, ValueOfSearch]);
 
   const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
-  const pizzasArray = pizzas.map((a, i) => <ProductCard key={i} {...a} />);
+  const pizzasArray = items.map((obj, i) => <ProductCard key={i} {...obj} />);
   if (status === 'error') {
     <Error />;
   }

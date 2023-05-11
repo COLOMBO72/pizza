@@ -1,6 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
-const initialState = {
+export type CartItem = {
+    id: string;
+    title: string;
+    price: number;
+    imageUrl: string;
+    type: string;
+    size: number;
+    count: number;
+}// в тип мы можем передать всё, даже тесты и функции
+
+interface ICartSliceState {
+  sum: number;
+  orders: CartItem[];
+}//интерфейс инициализируется как объект
+
+const initialState: ICartSliceState = {
   orders: [],
   sum: 0,
 };
@@ -9,7 +25,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addOrder(state, action) {
+    addOrder(state, action: PayloadAction<CartItem>) {
       const findOrder = state.orders.find((obj) => obj.id == action.payload.id);
       // const findType = state.orders.find((obj) => obj.type == action.payload.type);
       if (findOrder) {
@@ -24,7 +40,7 @@ const cartSlice = createSlice({
         return obj.price * obj.count + price;
       }, 0);
     },
-    orderMinusCount(state, action) {
+    orderMinusCount(state, action: PayloadAction<CartItem>) {
       const findOrder = state.orders.find((obj) => obj.id == action.payload.id);
       if (findOrder) {
         findOrder.count--;
@@ -33,8 +49,11 @@ const cartSlice = createSlice({
         return obj.price * obj.count;
       }, 0);
     },
-    removeOrder(state,action) {
+    removeOrder(state,action: PayloadAction<string>) {
       state.orders = state.orders.filter((obj) => obj.id !== action.payload)
+      state.sum = state.orders.reduce((price, obj) => {
+        return obj.price * obj.count;
+      }, 0);
     },
     clearOrders(state) {
       state.orders = [];
@@ -42,6 +61,10 @@ const cartSlice = createSlice({
     },
   },
 });
+
+export const selectCart = (state: RootState) => state.cart;
+export const selectCartOrderById = (id: string) =>  
+(state: RootState) => state.cart.orders.find((obj) => obj.id == id);
 
 export const { addOrder, orderMinusCount, clearOrders,removeOrder } = cartSlice.actions;
 export default cartSlice.reducer;

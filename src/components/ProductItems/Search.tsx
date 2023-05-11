@@ -1,27 +1,28 @@
 import React from 'react';
 import stylesSearch from '../../styles/Search.module.scss';
-import { useSelector, useDispatch } from 'react-redux';
-import { setSearchValue } from '../../Redux/slices/filterSlice';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../Redux/store';
+import { selectFilter, setSearchValue } from '../../Redux/slices/filterSlice';
 import debounce from 'lodash.debounce';
 
-const Search = () => {
+const Search:React.FC = () => {
   const [value,setValue] = React.useState('')
-  const dispatch = useDispatch(setSearchValue());
-  const search = useSelector((state) => state.filter.ValueOfSearch);
-  const inputRef = React.useRef();
+  const dispatch = useAppDispatch();
+  const {ValueOfSearch} = useSelector(selectFilter);
+  const inputRef = React.useRef<HTMLInputElement>(null);
   //debounce откладывает запрос на сервер на 1с
   const onSearchUpdate = React.useCallback(
-    debounce((value) => {
+    debounce((value: string) => {
       dispatch(setSearchValue(value))
     },1000), [])
-  const onSearch = (event) => {
+  const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value)
     onSearchUpdate(event.target.value)
   }
-  const onClickClose = (i) => {
+  const onClickClose = () => {
     dispatch(setSearchValue(''));
     setValue('')
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   return (
@@ -33,7 +34,7 @@ const Search = () => {
         onChange={onSearch}
       />
       <img className={stylesSearch.iconsearch} src="/img/icon-search.png" />
-      {search != 0 ? (
+      {ValueOfSearch != null ? (
         <img className={stylesSearch.iconclose} src="/img/icon-close.png" onClick={onClickClose} />
       ) : (
         ''

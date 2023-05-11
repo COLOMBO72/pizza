@@ -1,27 +1,30 @@
 import React from 'react';
 import stylesCard from '../../styles/ProductCard.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { addOrder } from '../../Redux/slices/cartSlice';
+import { useSelector } from 'react-redux';
+import { CartItem, addOrder, selectCartOrderById } from '../../Redux/slices/cartSlice';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../Redux/store';
+import { Pizza } from '../../Redux/slices/pizzasSlice';
 
-const ProductCard = ({ id, title, price, imageUrl, type, size, ...props }) => {
-  let arrTypes = ['Тонкое', 'Толстое'];
-  let [activeType, setActiveType] = React.useState(false);
-  let [activeSize, setActiveSize] = React.useState(false);
-  const dispatch = useDispatch();
-  const countOrder = useSelector((state) => state.cart.orders.find((obj) => obj.id == id));
+const ProductCard: React.FC<Pizza> = ({id,title,price,imageUrl,types,sizes,rating}) => {
+  let arrTypes = ['Тонкое', 'Пышное'];
+  let [activeType, setActiveType] = React.useState('');
+  let [activeSize, setActiveSize] = React.useState(0);
+  const dispatch = useAppDispatch();
+  const countOrder = useSelector(selectCartOrderById(id));
   const addedCount = countOrder ? countOrder.count : 0;
   const onClickAdd = () => {
-    const order = {
+    const order: CartItem = {
       id,
       title,
       price,
       imageUrl,
       type: arrTypes[activeType],
-      activeSize,
+      size: activeSize,
+      count: 0,
     };
-    if (activeSize == false && type==undefined) {
-      alert('Выберите размер и тип пиццы');
+    if (activeSize == 0) {
+      alert('check types or sizes');
     } else {
       dispatch(addOrder(order));
       console.log(order);
@@ -30,24 +33,27 @@ const ProductCard = ({ id, title, price, imageUrl, type, size, ...props }) => {
 
   return (
     <div className={stylesCard.card}>
-      <Link to={`/pizza/${id}`}><img src={imageUrl} width={200} /></Link>
       <p>{title}</p>
-      <div>
+      <Link to={`/pizza/${id}`}>
+        <img src={imageUrl} width={200} />
+      </Link>
+      Rating: {rating}
+      <div className={stylesCard.nearlyWrapper}>
         <div className={stylesCard.sizesPizza}>
-          {props.sizes.map((s) => {
+          {sizes.map((s) => {
             return (
               <button
                 onClick={() => setActiveSize(s)}
                 className={activeSize === s ? `${stylesCard.sbuttonactive}` : null}
                 key={s}
               >
-                {s}см.
+                {s ? `${s}см` : ''}
               </button>
             );
           })}
         </div>
         <div className={stylesCard.typesPizza}>
-          {props.types.map((t) => {
+          {types.map((t) => {
             return (
               <button
                 onClick={() => setActiveType(t)}
@@ -67,7 +73,6 @@ const ProductCard = ({ id, title, price, imageUrl, type, size, ...props }) => {
           </button>
         </div>
       </div>
-      Rating: {props.rating}
     </div>
   );
 };
