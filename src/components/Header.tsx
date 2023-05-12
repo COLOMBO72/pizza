@@ -42,11 +42,6 @@ const Header: React.FC = () => {
               </NavLink>
             )}
           </div>
-          {location.pathname != '/login' && (
-            <NavLink to="/login">
-              <img src="/img/logo-user.png" />
-            </NavLink>
-          )}
         </div>
       </div>
     </header>
